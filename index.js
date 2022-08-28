@@ -37,13 +37,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.json());
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', req.headers['origin']);
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST, DELETE,OPTIONS');
-  next();
-});
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
@@ -68,4 +61,12 @@ app.listen(process.env.PORT || 4444, (err) => {
     return console.log(err);
   }
   console.log('Server work');
+});
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', req.headers['origin']);
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST, DELETE,OPTIONS');
+  next();
 });
