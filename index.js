@@ -21,6 +21,13 @@ import {
 mongoose.connect(process.env.MONGODB_URI).then(() => console.log('getted'));
 
 const app = express();
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', req.headers['origin']);
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST, DELETE,OPTIONS');
+  next();
+});
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -61,12 +68,4 @@ app.listen(process.env.PORT || 4444, (err) => {
     return console.log(err);
   }
   console.log('Server work');
-});
-
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', req.headers['origin']);
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST, DELETE,OPTIONS');
-  next();
 });
