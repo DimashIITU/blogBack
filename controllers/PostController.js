@@ -127,9 +127,17 @@ export const getAll = async (req, res) => {
     });
 
     res.header('Access-Control-Allow-Origin', ['*']);
-    res.header('Access-Control-Allow-Methods', 'GET');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', [
+      'GET',
+      'POST',
+      'HEAD',
+      'PATCH',
+      'DELETE',
+      'PUT',
+      'OPTIONS',
+    ]);
+    res.header('Access-Control-Allow-Credentials', [true]);
+    res.header('Access-Control-Allow-Headers', ['Content-Type', 'ACCEPT', 'AUTHORIZATION']);
     res.json(posts);
   } catch (error) {
     console.log(error);

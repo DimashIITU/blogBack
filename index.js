@@ -18,7 +18,11 @@ import {
   getLastTags,
 } from './controllers/index.js';
 
-mongoose.connect(process.env.MONGODB_URI).then(() => console.log('getted'));
+mongoose
+  .connect(
+    'mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority',
+  )
+  .then(() => console.log('getted'));
 
 const app = express();
 
