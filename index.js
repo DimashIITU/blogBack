@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import cors from 'cors';
 
 import mongoose from 'mongoose';
 import { postCreateValidator, registerValidator } from './validations.js';
@@ -40,6 +41,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 app.use(express.json());
+app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {

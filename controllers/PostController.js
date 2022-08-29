@@ -120,24 +120,7 @@ export const getOne = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const posts = await PostModel.find().populate('user').exec();
-    res.set({
-      'Content-Type': 'text/plain',
-      'Content-Length': '123',
-      ETag: '12345',
-    });
 
-    res.header('Access-Control-Allow-Origin', ['*']);
-    res.header('Access-Control-Allow-Methods', [
-      'GET',
-      'POST',
-      'HEAD',
-      'PATCH',
-      'DELETE',
-      'PUT',
-      'OPTIONS',
-    ]);
-    res.header('Access-Control-Allow-Credentials', [true]);
-    res.header('Access-Control-Allow-Headers', ['Content-Type', 'ACCEPT', 'AUTHORIZATION']);
     res.json(posts);
   } catch (error) {
     console.log(error);
