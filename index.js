@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import cors from 'cors';
 
 import mongoose from 'mongoose';
 import { postCreateValidator, registerValidator } from './validations.js';
@@ -27,11 +28,12 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST, DELETE,OPTIONS');
   next();
-});
-app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
-  res.append('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST, DELETE,OPTIONS');
-  res.append('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  );
   next();
 });
 
@@ -48,7 +50,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
+app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
