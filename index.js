@@ -45,9 +45,14 @@ app.use(express.json());
 app.use(
   cors({
     origin: 'https://blog-front-phi.vercel.app',
-    METHODS: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    METHODS: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    credentials: true,
+    optionsSuccessStatus: 200,
   }),
 );
+app.options('*', cors());
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
