@@ -18,6 +18,7 @@ import {
   update,
   getLastTags,
 } from './controllers/index.js';
+import { METHODS } from 'http';
 
 mongoose
   .connect(
@@ -41,7 +42,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://blog-front-phi.vercel.app',
+    METHODS: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  }),
+);
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
