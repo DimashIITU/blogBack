@@ -47,7 +47,6 @@ app.use(
     origin: 'https://blog-front-phi.vercel.app',
     METHODS: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
     preflightContinue: false,
     optionsSuccessStatus: 200,
