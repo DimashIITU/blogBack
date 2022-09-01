@@ -49,6 +49,7 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
+    preflightContinue: false,
     optionsSuccessStatus: 200,
   }),
 );
