@@ -18,19 +18,14 @@ import {
   update,
   getLastTags,
 } from './controllers/index.js';
-import { METHODS } from 'http';
 
-mongoose
-  .connect(
-    'mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority',
-  )
-  .then(() => console.log('getted'));
+mongoose.connect(process.env.MONGODB_URI).then(() => console.log('getted'));
 
 const app = express();
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    if (fs.existsSync('uploads')) {
+    if (!fs.existsSync('uploads')) {
       fs.mkdirSync('uploads');
     }
     cb(null, 'uploads');
@@ -45,7 +40,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: 'https://blog-front-phi.vercel.app',
-    METHODS: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
     exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
