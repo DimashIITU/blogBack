@@ -48,7 +48,7 @@ const upload = multer({ storage });
 app.use(express.json());
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://myblogname.herokuapp.com',
     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
     exposedHeaders: ['Content-Range', 'X-Content-Range'],
