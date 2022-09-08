@@ -119,7 +119,7 @@ export const getOne = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const posts = await PostModel.find().populate('user').exec();
+    const posts = await PostModel.find().sort({ createdAt: -1 }).populate('user').exec();
 
     res.json(posts);
   } catch (error) {
@@ -130,9 +130,50 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getAllPopular = async (req, res) => {
+  try {
+    const posts = await PostModel.find().sort({ viewsCount: -1 }).populate('user').exec();
+    res.json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Не удалось получить статьи',
+    });
+  }
+};
+
+export const getByTag = async (req, res) => {
+  try {
+    const posts = await PostModel.find({ tags: req.params.tag })
+      .sort({ createdAt: -1 })
+      .populate('user')
+      .exec();
+    res.json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Не удалось получить статьи',
+    });
+  }
+};
+
+export const getByTagPopular = async (req, res) => {
+  try {
+    const posts = await PostModel.find({ tags: req.params.tag })
+      .sort({ viewsCount: -1 })
+      .populate('user')
+      .exec();
+    res.json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Не удалось получить статьи',
+    });
+  }
+};
+
 export const create = async (req, res) => {
   try {
-    console.log(req.body.imageUrl);
     const doc = new PostModel({
       title: req.body.title,
       text: req.body.text,
@@ -146,7 +187,6 @@ export const create = async (req, res) => {
     res.json(post);
   } catch (error) {
     console.log(error);
-    x;
     res.status(500).json({
       message: 'Не удалось создать статью',
     });

@@ -17,9 +17,20 @@ import {
   remove,
   update,
   getLastTags,
+  getAllPopular,
+  getByTagPopular,
+  getComments,
+  getLastComments,
+  postComment,
 } from './controllers/index.js';
+import { getByTag } from './controllers/PostController.js';
 
-mongoose.connect(process.env.MONGODB_URI).then(() => console.log('getted'));
+mongoose
+  // process.env.MONGODB_URL
+  .connect(
+    'mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority',
+  )
+  .then(() => console.log('getted'));
 
 const app = express();
 
@@ -38,17 +49,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 app.use(express.json());
 app.use(
-  cors({
-    origin: 'https://blog-front-phi.vercel.app',
-    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
-    exposedHeaders: ['Content-Range', 'X-Content-Range'],
-    credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-  }),
+  cors(),
+  // 	{
+  //     origin: '*',
+  //     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  //     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+  //     exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  //     credentials: true,
+  //     preflightContinue: false,
+  //     optionsSuccessStatus: 200,
+  //   }
 );
-app.options('*', cors());
+// app.options('*', cors());
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
@@ -59,10 +71,17 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 app.post('/auth/login', loginValidator, handleValidationErrors, login);
 app.post('/auth/register', registerValidator, handleValidationErrors, register);
 app.post('/posts', checkAuth, postCreateValidator, handleValidationErrors, create);
-app.get('/posts', postCreateValidator, getAll);
+app.post('/comment/add', checkAuth, postComment);
+
+app.get('/posts/?category=0', postCreateValidator, getAll);
+app.get('/posts/?category=1', postCreateValidator, getAllPopular);
 app.get('/tags', getLastTags);
 app.get('/posts/:id', postCreateValidator, getOne);
+app.get('/tags/search?category=0/:tag', postCreateValidator, getByTag);
+app.get('/tags/search?category=1/:tag', postCreateValidator, getByTagPopular);
 app.get('/auth/me', checkAuth, getMe);
+app.get('/comments', getComments);
+app.get('/comments/preview', getLastComments);
 
 app.delete('/posts/:id', checkAuth, remove);
 
