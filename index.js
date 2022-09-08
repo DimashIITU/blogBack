@@ -26,10 +26,8 @@ import {
 import { getByTag } from './controllers/PostController.js';
 
 mongoose
-  // process.env.MONGODB_URL
-  .connect(
-    'mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority',
-  )
+  // mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority
+  .connect(process.env.MONGODB_URL)
   .then(() => console.log('getted'));
 
 const app = express();
@@ -49,16 +47,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 app.use(express.json());
 app.use(
-  cors(),
-  // 	{
-  //     origin: '*',
-  //     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
-  //     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
-  //     exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  //     credentials: true,
-  //     preflightContinue: false,
-  //     optionsSuccessStatus: 200,
-  //   }
+  cors({
+    origin: '*',
+    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 200,
+  }),
 );
 // app.options('*', cors());
 app.use('/uploads', express.static('uploads'));
