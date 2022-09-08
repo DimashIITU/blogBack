@@ -57,7 +57,18 @@ app.use(
     optionsSuccessStatus: 200,
   }),
 );
-app.options('*', cors());
+app.options(
+  '*',
+  cors({
+    origin: 'https://blog-front-phi.vercel.app/',
+    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 200,
+  }),
+);
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
