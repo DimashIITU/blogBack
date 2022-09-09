@@ -57,7 +57,7 @@ app.use(
     optionsSuccessStatus: 200,
   }),
 );
-app.options('*', cors({ origin: 'https://blog-front-phi.vercel.app' }));
+app.options('*', cors());
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
