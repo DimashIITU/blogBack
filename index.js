@@ -49,6 +49,10 @@ app.use(express.json());
 app.use(
   cors({
     origin: 'https://blog-front-phi.vercel.app',
+    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range', '*', 'Authorization'],
+    credentials: true,
   }),
 );
 app.use('/uploads', express.static('uploads'));
