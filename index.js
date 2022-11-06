@@ -49,21 +49,22 @@ var whitelist = ['https://blog-front-phi.vercel.app/', 'https://myblogname.herok
 const upload = multer({ storage });
 app.use(express.json());
 app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
-    exposedHeaders: ['Content-Range', 'X-Content-Range'],
-    credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-  }),
+  cors(),
+  // 	{
+  //     origin: function (origin, callback) {
+  //       if (whitelist.indexOf(origin) !== -1) {
+  //         callback(null, true);
+  //       } else {
+  //         callback(new Error('Not allowed by CORS'));
+  //       }
+  //     },
+  //     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+  //     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+  //     exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  //     credentials: true,
+  //     preflightContinue: false,
+  //     optionsSuccessStatus: 200,
+  //   }
 );
 app.options('*', cors());
 app.use('/uploads', express.static('uploads'));
