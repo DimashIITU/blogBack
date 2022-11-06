@@ -1,7 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import cors from 'cors';
+import corsMiddleware from './cors/index.js';
+const corsMiddleware = require('./cors');
 
 import mongoose from 'mongoose';
 import { postCreateValidator, registerValidator } from './validations.js';
@@ -46,26 +47,23 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 app.use(express.json());
-app.use(
-  cors({
-    origin: 'https://blog-front-phi.vercel.app',
-    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
-    //  exposedHeaders: ['Content-Range', 'X-Content-Range'],
-    //  credentials: true,
-    //  preflightContinue: false,
-    optionsSuccessStatus: 200,
-  }),
-);
-app.options(
-  '*',
-  cors({
-    origin: 'https://blog-front-phi.vercel.app',
-    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
-    optionsSuccessStatus: 200,
-  }),
-);
+app.use(corsMiddleware);
+// 	{
+//     origin: 'https://blog-front-phi.vercel.app',
+//     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+//     //  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+//     //  credentials: true,
+//     //  preflightContinue: false,
+//     optionsSuccessStatus: 200,
+//   }
+app.options('*', corsMiddleware);
+// cors({
+//   origin: 'https://blog-front-phi.vercel.app',
+//   methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
+//   optionsSuccessStatus: 200,
+// }),
 app.use('/uploads', express.static('uploads'));
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
