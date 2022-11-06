@@ -44,11 +44,19 @@ const storage = multer.diskStorage({
   },
 });
 
+var whitelist = ['https://blog-front-phi.vercel.app/', 'https://myblogname.herokuapp.com/'];
+
 const upload = multer({ storage });
 app.use(express.json());
 app.use(
   cors({
-    origin: 'https://blog-front-phi.vercel.app',
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-Width', 'Authorization', 'Accept'],
     exposedHeaders: ['Content-Range', 'X-Content-Range'],
