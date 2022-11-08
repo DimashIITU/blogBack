@@ -26,8 +26,11 @@ import {
 import { getByTag } from './controllers/PostController.js';
 
 mongoose
+  // process.env.MONGODB_URL
   // mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority
-  .connect(process.env.MONGODB_URL)
+  .connect(
+    'mongodb+srv://blogAdmin:blogAdminPasword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority',
+  )
   .then(() => console.log('getted'));
 
 const app = express();
