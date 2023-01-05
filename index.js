@@ -47,10 +47,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.json());
-const reg = new RegExp([/^(.*)/]);
 app.use(function (req, res, next) {
-  res.setHeader('origin', `${reg}`);
-  res.setHeader('methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  res.setHeader('origin', '*'), res.setHeader('methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
   res.setHeader('preflightContinue', 'false');
   res.setHeader('optionsSuccessStatus', '200');
   res.setHeader('credentials', 'true');
