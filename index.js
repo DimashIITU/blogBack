@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import cors from 'cors';
 
 import mongoose from 'mongoose';
 import { postCreateValidator, registerValidator } from './validations.js';
@@ -27,7 +28,7 @@ import { getByTag } from './controllers/PostController.js';
 mongoose
   // process.env.MONGODB_URL
   // mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority
-  .connect(process.env.MONGODB_URL)
+  .connect('mongodb+srv://blogAdmin:blogAdminPasword@cluster0.wd2jvuc.mongodb.net/test')
   .then(() => console.log('getted'));
 
 const app = express();
@@ -47,17 +48,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.json());
-app.use(function (req, res, next) {
-  res.setHeader('origin', '*'), res.setHeader('methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-  res.setHeader('preflightContinue', 'false');
-  res.setHeader('optionsSuccessStatus', '200');
-  res.setHeader('credentials', 'true');
-  res.setHeader(
-    'allowedHeaders',
-    'Origin,X-Requested-With,Content-Type,Accept,Authorization,authorization,X-Forwarded-for',
-  );
-  next();
-});
+app.use(cors());
 
 app.use('/uploads', express.static('uploads'));
 
