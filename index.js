@@ -27,7 +27,7 @@ import { getByTag } from './controllers/PostController.js';
 
 mongoose
   // process.env.MONGODB_URL
-  // mongodb+srv://blogAdmin:blogAdminPassword@cluster0.wd2jvuc.mongodb.net/blog?retryWrites=true&w=majority
+  // 'mongodb+srv://blogAdmin:blogAdminPasword@cluster0.wd2jvuc.mongodb.net/test'
   .connect('mongodb+srv://blogAdmin:blogAdminPasword@cluster0.wd2jvuc.mongodb.net/test')
   .then(() => console.log('getted'));
 
